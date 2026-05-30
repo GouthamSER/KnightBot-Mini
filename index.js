@@ -461,6 +461,30 @@ console.log(`⚡ Prefix: ${config.prefix}`);
 const ownerNames = Array.isArray(config.ownerName) ? config.ownerName.join(',') : config.ownerName;
 console.log(`👑 Owner: ${ownerNames}\n`);
 
+// Export store for use in commands
+module.exports = { store };
+
+// Koyeb Health Check Server
+const http = require('http');
+
+const PORT = process.env.PORT || 8000;
+
+http.createServer((req, res) => {
+  if (req.url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({
+      status: 'ok',
+      bot: config.botName,
+      uptime: process.uptime()
+    }));
+  }
+
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('KnightBot-Mini Running');
+}).listen(PORT, () => {
+  console.log(`🌐 Health server running on port ${PORT}`);
+});
+
 // Proactively delete Puppeteer cache so it doesn't fill disk on panels
 cleanupPuppeteerCache();
 
@@ -468,6 +492,7 @@ startBot().catch(err => {
   console.error('Error starting bot:', err);
   process.exit(1);
 });
+
 // Handle process termination
 process.on('uncaughtException', (err) => {
   // Handle ENOSPC errors gracefully without crashing
