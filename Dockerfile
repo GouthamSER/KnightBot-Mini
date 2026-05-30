@@ -1,16 +1,16 @@
-FROM node:22-alpine
+FROM node:20-alpine
 
-RUN apk add --no-cache 
-ffmpeg 
-git 
-python3 
-make 
-g++ 
-cairo-dev 
-pango-dev 
-jpeg-dev 
-giflib-dev 
-pixman-dev
+RUN apk add --no-cache \
+    ffmpeg \
+    git \
+    python3 \
+    make \
+    g++ \
+    cairo-dev \
+    pango-dev \
+    jpeg-dev \
+    giflib-dev \
+    pixman-dev
 
 WORKDIR /app
 
